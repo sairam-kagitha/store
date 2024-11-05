@@ -11,14 +11,15 @@ const LogoutButton = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
 
-    const handleClick = async () => {
+   const handleClick = async () => {
         setIsLoading(true)
-        try {
-            await deleteUser()
+        const result = await deleteUser()
+        if (result.ok) {
             Cookies.remove("jwt")
             router.refresh()
-        } catch (error) {
-            toast.error("Something went wrong")
+        } else {
+            toast.error(result.error || "Something went wrong")
+            setIsLoading(false)
         }
     }
 

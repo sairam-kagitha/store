@@ -91,6 +91,8 @@ export const deleteUser = async () => {
                 userId: user.userId,
             },
         })
+        const cookieStore = await cookies()
+        cookieStore.delete("jwt")
         return { ok: true }
     } catch (error) {
         return { ok: false, error: "Something went wrong" }

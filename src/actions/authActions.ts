@@ -84,11 +84,15 @@ export const getUser = async (): Promise<AppUser | null> => {
 
 export const deleteUser = async () => {
     const user = await getUser()
-    if (!user) return
-
-    await prisma.user.delete({
-        where: {
-            userId: user.userId,
-        },
-    })
+    if (!user) return { ok: false, error: "User not found" }
+    try {
+        await prisma.user.delete({
+            where: {
+                userId: user.userId,
+            },
+        })
+        return { ok: true }
+    } catch (error) {
+        return { ok: false, error: "Something went wrong" }
+    }
 }
